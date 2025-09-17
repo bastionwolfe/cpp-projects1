@@ -3,9 +3,9 @@ This is a folder to showcase and record my travels through c++ projects and othe
 ===
 
 # Hello world
-- the start of it all -
+- the start of it all
 
 # C++ workshop - Packt
-- First work book I will be going through. They have examples of code in it then a project to do to practice said examples - 
+- First work book I will be going through. They have examples of code in it then a project to do to practice said examples
 
 
