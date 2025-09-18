@@ -14,13 +14,15 @@
 #include <cstdlib>
 
 
+
+
 int main() {
     bool isRunning = true;
     
     
     while (isRunning){
-        count = 0
-        int userGuess
+        int count = 0;
+        int userGuess;
         int guessCount;
         int minNumber;
         int maxNumber;
@@ -46,15 +48,31 @@ int main() {
                 std::cout << "Please enter the highest number that it could be: ";
                 getline(std::cin, input);
                 maxNumber = std::stoi(input);
-                randomNumber = rand() % (maxNumber - minNumber + 1);
-                while (guessCount >= count){
-                    std::cout << "Guess a number between " << minNumber << " and " << maxNumber << "." << "\n";
+                randomNumber = minNumber + (rand() % (maxNumber - minNumber + 1));
+                do {
+                    std::cout << "Please enter your guess: " << "\n";
                     getline(std::cin, input);
                     userGuess = std::stoi(input);
+                    ++count;
                     if (userGuess > randomNumber) {
-                        std::out << "You Guess too high! Try again";
-                        ++count;
+                        std::cout << "Your guess is higher than the chosen number" << "\n";
+                    }
+                    else if (userGuess < randomNumber) {
+                        std::cout << "Your guess is smaller than the chosen number" << "\n";
+                    }
+                    else {
+                        continue;
+                    } 
+                } while (userGuess != randomNumber && count != guessCount);
+                if (userGuess == randomNumber) {
+                    std::cout << "Congratulations! You won the game!" << "\n";
+                    continue;
                 }
+                else {
+                    std::cout << "You didn't get the number in time, better luck next time!" << "\n";
+                }
+                
+                
             case 2:
                 isRunning = false;
                 break;
@@ -63,7 +81,5 @@ int main() {
         }
             
     }
-    
-
     
 }
