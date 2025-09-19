@@ -72,12 +72,12 @@ int main() {
                     std::cout << "You didn't get the number in time, better luck next time!" << "\n";
                 }
                 
-                
+                break;
             case 2:
                 isRunning = false;
                 break;
             default:
-                continue;
+                break;
         }
             
     }
