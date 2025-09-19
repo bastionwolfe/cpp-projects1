@@ -50,9 +50,9 @@ void fetchRecord () {
 int main () {
     int userChoice;
     bool isrunning = true;
-    std::cout << "Hello and welcoem to privacy-plus corperations internal and top-secret user ID system.\n";
+    std::cout << "Hello and welcome to privacy-plus corp LLC.(not a realy llc anything that is similar to a real-life business is not intended) internal and top-secret user ID system.\n";
     while (isrunning == true) {
-        std::cout << "please choose one of the following options by entering the assocaited number.\n";
+        std::cout << "please choose one of the following options by entering the associated number.\n";
         std::cout << "1. Add a new user. \n";
         std::cout << "2. Look up an existing user. \n";
         std::cout << "3. Exit this program. \n";
