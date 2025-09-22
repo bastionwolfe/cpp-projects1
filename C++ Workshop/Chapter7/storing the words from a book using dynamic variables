@@ -8,20 +8,19 @@
 //6. what data struct should be use to hold a book.
 //7. how should a null-terminating string of characters be converted to a list of words?
 //8. need a function to produse a string representing the line from the list of words.
-//.  DO NOT USE CONTAINER CLASSES OR STD::STRINGS 
+//.  DO NOT USE CONTAINER CLASSES OR STD::STRING
 //   use provided text below
 //. "What a piece of work is man, "
 //. "   How noble in reason, how infinite in faculty,"
 //. "In form and moving how express and admirable, "
 //. "   In action how like an Angel, In apprehension how like a god."
 //. "The beauty of the world. The paragon of animals."
-#include <memory>
 #include <iostream>
-
-std::unique_ptr<char[]> ptr_;
+#include <memory>
+#include <cstring>
 
 struct word {
-    unique_ptr<char[]> ptr_;
+    std::unique_ptr<char[]> ptr_;
     int letters_;
     int spaces_;
     word* next_;
@@ -36,15 +35,132 @@ struct book {
     line* first_;
 };
 
+word* make_word(const char* start, int len, int spaces) {
+    word* w = new word{};
+    w->letters_ = len;
+    w->spaces_ = spaces;
+    w->next_ = nullptr;
+
+    w->ptr_ = std::make_unique<char[]>(len + 1);
+    if (len > 0) {
+        std::memcpy(w->ptr_.get(), start, len);
+    }
+    w->ptr_[len] = '\0';
+
+    return w;
+}
+
+void free_words(word* w) {
+    while (w) {
+        word* next = w->next_;
+        delete w;
+        w = next;
+    }
+}
+
+
 void parse_line(const char* ln, line* targeted_line) {
+    const char* p = ln;
+    targeted_line->head_ = nullptr;
+    word* tail = nullptr;
 
+    while (*p) {
+        const char* start = p;
+        int len = 0;
+        while (*p && *p != ' ') {
+            ++len;
+            ++p;
+        }
+        int spaces = 0;
+        while (*p == ' ') {
+            ++spaces;
+            ++p;
+        }
+        word* w = make_word(start, len, spaces);
+
+        if (!targeted_line->head_)
+            targeted_line->head_ = w;
+        else
+            tail->next_ = w;
+
+        tail = w;
+    }
 }
 
-void Stringify() {
-    
+void free_lines(line* l) {
+    while (l) {
+        line* next = l->next_;
+        free_words(l->head_);
+        delete l;
+        l = next;
+    }
 }
 
+line* make_line(const char* ln) {
+    line* l = new line{};
+    l->next_ = nullptr;
+    parse_line(ln, l);
+    return l;
+}
+
+book* parse_book(const char* lines[], int count) {
+    book* b = new book{};
+    b->first_ = nullptr;
+
+    line* tail = nullptr;
+    for (int i = 0; i < count; ++i) {
+        line* l = make_line(lines[i]);
+        if (!b->first_)
+            b->first_ = l;
+        else
+            tail->next_ = l;
+        tail = l;
+    }
+
+    return b;
+}
+
+void free_book(book* b) {
+    if (!b) return;
+    free_lines(b->first_);
+    delete b;
+}
+
+void print_line(const line* ln) {
+    const word* w = ln->head_;
+    while (w) {
+        if (w->letters_ > 0) {
+            std::cout << w->ptr_.get();
+        }
+        for (int i = 0; i < w->spaces_; ++i) {
+            std::cout << ' ';
+        }
+        w = w->next_;
+    }
+    std::cout << "\n";
+}
+
+void print_book(const book* b) {
+    const line* l = b->first_;
+    while (l) {
+        print_line(l);
+        l = l->next_;
+    }
+}
 
 int main() {
+    const char* text[] = {
+        "What a piece of work is man, ",
+        "   How noble in reason, how infinite in faculty,",
+        "In form and moving how express and admirable, ",
+        "   In action how like an Angel, In apprehension how like a god.",
+        "The beauty of the world. The paragon of animals."
+    };
+
+    book* b = parse_book(text, 5);
+
+    print_book(b);
     
+    
+    free_book(b);
 }
