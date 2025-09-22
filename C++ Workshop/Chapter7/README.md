@@ -1,2 +1,2 @@
-Chapter 2 - Ownership and Lifetime of Dynamic Variables
+Chapter 7 - Ownership and Lifetime of Dynamic Variables
 ===
